@@ -34,6 +34,19 @@ namespace tabuleiro
             p.Posicao = pos;
         }
 
+        public Peca RetirarPeca(Posicao pos)
+        {
+            // a peca do tabuleiro que estiver na posição pos = null, 
+            // ou seja não teve nenhuma peça para retirar do tabuleiro
+            if (Peca(pos) == null)
+            {
+                return null;
+            }
+            Peca aux = Peca(pos);
+            aux.Posicao = null; /// retirando posição da peça
+            Pecas[pos.Linha, pos.Coluna] = null;
+            return aux;
+        }
         public bool ExistePeca(Posicao pos)
         {
             ValidarPosicao(pos);
