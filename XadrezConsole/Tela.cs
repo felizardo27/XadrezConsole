@@ -4,6 +4,7 @@ using xadrez;
 
 namespace XadrezConsole
 {
+    //classe que imprimi o tabuleiro
     class Tela
     {
         public static void ImprimirTabuleiro(Tabuleiro tab)
@@ -11,20 +12,40 @@ namespace XadrezConsole
             for (int i = 0; i < tab.Linhas; i++)
             {
                 Console.Write(8 - i + " ");
-                for(int j = 0; j < tab.Colunas; j++)
+                for (int j = 0; j < tab.Colunas; j++)
                 {
-                    if (tab.Peca(i,j) == null)
-                        Console.Write("- ");
-                    else
-                    {
-                        ImprimirPeca(tab.Peca(i, j));
-                        Console.Write(" ");
-                    }
-                        
+                    ImprimirPeca(tab.Peca(i, j));
                 }
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h");
+        }
+
+        //sobrecarga do metodo imprimirTabuleiro, para imprimir junto as posições possíveis da peça
+        public static void ImprimirTabuleiro(Tabuleiro tab, bool[,] possicoesPossiveis)
+        {
+            ConsoleColor fundoOriginal = Console.BackgroundColor;
+            ConsoleColor fundoAlterado = ConsoleColor.DarkGray;
+            for (int i = 0; i < tab.Linhas; i++)
+            {
+                Console.Write(8 - i + " ");
+                for (int j = 0; j < tab.Colunas; j++)
+                {
+                    if (possicoesPossiveis [i, j])
+                    {
+                        Console.BackgroundColor = fundoAlterado;
+                    }
+                    else
+                    {
+                        Console.BackgroundColor = fundoOriginal;
+                    }
+                    ImprimirPeca(tab.Peca(i, j));
+                    Console.BackgroundColor = fundoOriginal;
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("  a b c d e f g h");
+            Console.BackgroundColor = fundoOriginal;
         }
 
         public static PosicaoXadrez LerPosicaoXadrez()
@@ -37,16 +58,24 @@ namespace XadrezConsole
 
         public static void ImprimirPeca(Peca peca)
         {
-            if (peca.Cor == Cor.Branca) // Imprimindo Peça Brando Normal
+            if (peca == null)
             {
-                Console.Write(peca);
+                Console.Write("- ");
             }
-            else  // Imprimindo Peça como amarelo
+            else
             {
-                ConsoleColor aux = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write(peca);
-                Console.ForegroundColor = aux;
+                if (peca.Cor == Cor.Branca) // Imprimindo Peça Branco Normal
+                {
+                    Console.Write(peca);
+                }
+                else  // Imprimindo Peça como amarelo(preta)
+                {
+                    ConsoleColor aux = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(peca);
+                    Console.ForegroundColor = aux;
+                }
+                Console.Write(" ");
             }
         }
     }
